@@ -13,20 +13,13 @@ import MediaPlayer
 class ViewController: UIViewController {
 
     let avQueuePlayer:AVQueuePlayer = AVQueuePlayer()
-    
+    var playerLooper: NSObject?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         theHous.text = ""
         ViewController.initSession()
         self.playBGSong()
-//        do {
-//            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers, .allowAirPlay])
-//            print("Playback OK")
-//            try AVAudioSession.sharedInstance().setActive(true)
-//            print("Session is Active")
-//        } catch {
-//            print(error)
-//        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,7 +53,12 @@ class ViewController: UIViewController {
     func playBGSong() {
         let assetUrl = Bundle.main.url(forResource: "theme", withExtension: "mp3")
         let avSongItem = AVPlayerItem(url: assetUrl!)
+        
         self.avQueuePlayer.insert(avSongItem, after: nil)
+        
+        // Create a new player looper with the queue player and template item
+        playerLooper = AVPlayerLooper(player: self.avQueuePlayer, templateItem:avSongItem)
+
         self.play()
         
     }
@@ -72,10 +70,17 @@ class ViewController: UIViewController {
     class func initSession() {
         
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, mode: AVAudioSession.Mode.default, options: AVAudioSession.CategoryOptions.duckOthers)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient, mode: AVAudioSession.Mode.default, options: AVAudioSession.CategoryOptions.duckOthers)
             let _ = try AVAudioSession.sharedInstance().setActive(true)
         } catch let error as NSError {
             print("an error occurred when audio session category.\n \(error)")
+        }
+    }
+    
+    func loopVideo(_ videoPlayer: AVPlayer) {
+        NotificationCenter.default.addObserver(forName: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil, queue: nil) { notification in
+                videoPlayer.seek(to: CMTime.zero)
+                videoPlayer.play()j
         }
     }
         
