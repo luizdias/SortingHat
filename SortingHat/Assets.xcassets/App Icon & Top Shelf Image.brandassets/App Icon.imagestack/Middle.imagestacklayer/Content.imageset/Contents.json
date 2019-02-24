@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "tv",
-      "filename" : "Icon-76@2x.png",
+      "filename" : "appIcon.png",
       "scale" : "1x"
     },
     {
       "idiom" : "tv",
-      "filename" : "Icon-iPadPro@2x.png",
+      "filename" : "appIcon@2x.png",
       "scale" : "2x"
     }
   ],

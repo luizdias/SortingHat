@@ -80,7 +80,7 @@ class ViewController: UIViewController {
     func loopVideo(_ videoPlayer: AVPlayer) {
         NotificationCenter.default.addObserver(forName: NSNotification.Name.AVPlayerItemDidPlayToEndTime, object: nil, queue: nil) { notification in
                 videoPlayer.seek(to: CMTime.zero)
-                videoPlayer.play()j
+                videoPlayer.play()
         }
     }
         
